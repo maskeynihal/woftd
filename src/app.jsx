@@ -30,14 +30,25 @@ export function App() {
 
   return (
     <>
-      <h1>Word of the day</h1>
-
       {isLoading ? (
-        <h3>Loading ...</h3>
+        <div>
+          <h1>Word of the day</h1>
+          <h3>Loading ...</h3>
+        </div>
       ) : wordOfTheDay ? (
         <div>
-          <h2>{wordOfTheDay.word}</h2>
+          <h5>Word of the day</h5>
+
+          <h1>{wordOfTheDay.word}</h1>
           <p>{wordOfTheDay.description}</p>
+
+          <a
+            href={`https://dictionary.cambridge.org/dictionary/english/${wordOfTheDay.word}`}
+            target="_blank"
+            title="More details"
+          >
+            {">>"}
+          </a>
         </div>
       ) : (
         <h3>No Word of the day, Yet!!</h3>
