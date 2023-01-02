@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "preact": "^10.11.3"
+    "@supabase/supabase-js": "^2.2.3",
+    "dayjs": "^1.11.7",
+    "preact": "^10.11.3",
+    "react-query": "^3.39.2"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.4.0",

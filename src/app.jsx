@@ -1,32 +1,47 @@
-import { useState } from 'preact/hooks'
-import preactLogo from './assets/preact.svg'
-import './app.css'
+import { useEffect, useState } from "preact/hooks";
+import preactLogo from "./assets/preact.svg";
+import "./app.css";
+
+import { createClient } from "@supabase/supabase-js";
+import supabaseConstants from "./constants/supabase";
+import { useQuery } from "react-query";
+import dayjs from "dayjs";
+
+// Create a single supabase client for interacting with your database
+const supabase = createClient(
+  supabaseConstants.projectUrl,
+  supabaseConstants.apiKey
+);
 
 export function App() {
-  const [count, setCount] = useState(0)
+  const searchParams = new URLSearchParams(document.location.search);
+
+  const date = searchParams.get("date");
+
+  const { data: { data: [wordOfTheDay] = [] } = {}, isLoading } = useQuery(
+    "words",
+    async () =>
+      await supabase
+        .from(supabaseConstants.tables.words)
+        .select("*")
+        .eq("word_for", dayjs(new Date(date)).format("YYYY-MM-DD"))
+        .limit(1)
+  );
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" class="logo" alt="Vite logo" />
-        </a>
-        <a href="https://preactjs.com" target="_blank">
-          <img src={preactLogo} class="logo preact" alt="Preact logo" />
-        </a>
-      </div>
-      <h1>Vite + Preact</h1>
-      <div class="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/app.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p class="read-the-docs">
-        Click on the Vite and Preact logos to learn more
-      </p>
+      <h1>Word of the day</h1>
+
+      {isLoading ? (
+        <h3>Loading ...</h3>
+      ) : wordOfTheDay ? (
+        <div>
+          <h2>{wordOfTheDay.word}</h2>
+          <p>{wordOfTheDay.description}</p>
+        </div>
+      ) : (
+        <h3>No Word of the day, Yet!!</h3>
+      )}
     </>
-  )
+  );
 }
