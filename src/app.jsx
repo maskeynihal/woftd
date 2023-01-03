@@ -16,7 +16,7 @@ const supabase = createClient(
 export function App() {
   const searchParams = new URLSearchParams(document.location.search);
 
-  const date = searchParams.get("date");
+  const date = searchParams.get("date") || undefined;
 
   const { data: { data: [wordOfTheDay] = [] } = {}, isLoading } = useQuery(
     "words",
