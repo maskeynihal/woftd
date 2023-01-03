@@ -24,7 +24,7 @@ export function App() {
       await supabase
         .from(supabaseConstants.tables.words)
         .select("*")
-        .eq("word_for", dayjs(new Date(date)).format("YYYY-MM-DD"))
+        .eq("word_for", dayjs(date).format("YYYY-MM-DD"))
         .limit(1)
   );
 
